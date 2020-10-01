@@ -1,144 +1,361 @@
-
-
-
-
 #include<stdio.h>
-#include<stdlib.h>
-
-struct node
+typedef struct node
 {
-    int data;
-    struct node *next;
-};
+	int data;
+	struct node*next;
+}NODE;
 
-void create(struct node **h)
-{   
-    int i;
-    struct node *cur;
-    struct node *ptr;
-    printf("\n Enter 5 values of linked list: ");
-    for(i=0;i<5;i++)
-    {
-        cur=(struct node *)malloc(sizeof(struct node));
-        scanf("%d",&cur->data);
-        cur->next=NULL;
+NODE*st=NULL;
 
-    if((*h)==NULL)
-    {
-        *h=cur;
-        ptr=cur;
-    }
-    else
-    {
-        ptr->next=cur;
-        ptr=cur;
-    }
-    }
+//fn to create node
 
-}
-
-void display(struct node *h)
-{   
-    struct node *cur;
-    printf("linked list:\t");
-  for(cur=h;cur!=NULL;cur=cur->next)
-  {
-      printf("%d\t",cur->data);
-  }
-
-}
-
-void search(struct node *h,int x)
+NODE*createNode(int d)
 {
-    int flag=0;
-    struct node *cur;
-    for(cur=h;cur!=NULL;cur=cur->next)
-    {
-        if(cur->data==x)
-        {
-           flag=1;
-        }
-    }
-    if(flag==1)
-    {
-        printf("\nfound\n");
-    }
-    else
-    {
-        printf("\nNot found\n");
-    }
+	NODE*a;
+	a=(NODE*)malloc(sizeof(NODE));
+	a->data=d;
+	a->next=NULL;
+	return a;
+	
 }
 
-void insert(struct node **h,int x,int p)
+//fn to display list
+
+void display()
 {
-   struct node *cur;
-   struct node *ptr;
-   cur=(struct node *)malloc(sizeof(struct node));
-   cur->data=x;
-   cur->next=NULL;
-   if(*h==NULL)
-   {
-       *h=cur;
-   }
-   else if(p==0)
-   {
-       cur->next=*h;
-       *h=cur;
-   }
-   else
-   {
-       ptr=*h;
-       int i=1;
-       while(i<p && ptr->next!=NULL)
-       {
-           ptr=ptr->next;
-           i++;
-       }
-    cur->next=ptr->next;
-    ptr->next=cur;
-    
-   }
-}
-void del(struct node **h,int p)
-{
-    struct node *ptr;
-    struct node *prv;
-    if(*h==NULL)
-    {
-        printf("emp");
-    }
-    else if(p==0)
-    {
-        ptr=*h;
-        *h=ptr->next;
-        free(ptr);
-    }
-    else
-    {
-         ptr=*h;
-       int i=1;
-       while(i<p && ptr->next!=NULL)
-       {   
-           prv=ptr;
-           ptr=ptr->next;
-           i++;
-       }
-       prv->next=ptr->next;
-       free(ptr);
-    }
+	NODE*a=st;
+	if(st==NULL)
+		printf("\nEmpty list");
+	else
+	{
+		printf("\nData:\n");
+		while(a!=NULL)
+		{
+			printf("%4d",a->data);
+			a=a->next;
+		}
+	}	
 }
 
-int main()
+//fn to retrive last node
+
+NODE*getlastNode()
 {
-    struct node *head=NULL;
-    create(&head);
-    display(head);
-    search(head,7);
-    insert(&head,2,6);
-    display(head);
-    printf("\n");
-    del(&head,3);
-    display(head);
-    return 0;
+	NODE*a=st;
+	while(a->next!=NULL)
+	a=a->next;
+	return a;
 }
- 
+
+//fn to add new NODE at end
+
+void addEnd(int d)
+{
+	NODE*a=createNode(d);
+	NODE *b;
+	if(st==NULL)
+	st=a;
+	else
+	{
+		b=getlastNode();
+		b->next=a;
+	}
+}
+
+//fn to add new node at begin
+
+void addBeg(int d)
+{
+	NODE*a=createNode(d);
+	a->next=st;
+	st=a;
+	
+}
+
+//fn to count Node from list
+
+int count()
+{
+	NODE*a=st;
+	int cnt=0;
+	while(a!=NULL)
+	{
+		cnt++;
+		a=a->next;
+	}
+	return cnt;
+}
+
+//fn to compute sum from list
+
+int sum()
+{
+	NODE*a=st;
+	int tot=0;
+	while(a!=NULL)
+	{
+		tot = tot + a->data;
+		a=a->next;
+		
+	}
+	return tot;
+}
+
+//fn to search
+
+int search(int sv)
+{
+	NODE*a=st;
+	while(a!=NULL)
+	{
+		if(a->data==sv)
+		break;
+		a=a->next;
+	}
+	  if(a!=NULL)
+	  return 1;
+	  else
+	  return 0;
+	
+}
+//fn to replace
+void findReplace(int sv, int rv)
+{
+	NODE*a=st;
+	while(a!=NULL)
+	{
+		if(a->data==sv)
+		a->data=rv;
+		a=a->next;
+	}
+	return;
+}
+
+//fn to find max
+
+int findMax()
+{
+	NODE*a=st;
+	int max=a->data;
+	a=a->next;
+	while(a!=NULL)
+	{
+		if(a->data>max)
+		max=a->data;
+		a=a->next;
+	}
+	return max;
+}
+
+//fn to find min
+
+int findMin()
+{
+	NODE*a=st;
+	int min=a->data;
+	a=a->next;
+	while(a!=NULL)
+	{
+		if(a->data<min)
+		min=a->data;
+		a=a->next;
+	}
+	return min;
+}
+
+//fn to find odd count
+
+int oddCnt()
+{
+	NODE*a=st;
+	int odd=0;
+	while(a!=NULL)
+	{
+		if(a->data%2!=0)
+		odd++;
+		a=a->next;
+	}
+	return odd;
+}
+
+
+//fn to find even count
+
+int evenCnt()
+{
+	NODE*a=st;
+	int even=0;
+	while(a!=NULL)
+	{
+		if(a->data%2==0)
+		even++;
+		a=a->next;
+	}
+	return even;
+}
+
+//fn to check list data in ascending order
+
+int isOrdered()
+{
+	NODE*a=st,*b;
+	b=a;
+	a=a->next;
+	while(a!=NULL)
+	{
+		if(a->data<b->data)
+		break;
+		b=a;
+		a=a->next;
+		
+	}
+	if(a==NULL)
+	return 1;
+	else
+	return 0;
+}
+
+//fn to sort list data in ascending order
+
+void sort()
+{
+	NODE*a=st,*b,*c;
+	int tmp;
+	while(a->next!=NULL)
+	{
+		b=a;
+		c=a->next;
+		while(c!=NULL)
+		{
+			if(c->data<b->data)
+			b=c;
+			c=c->next;
+		}
+		if(a!=b)
+		{
+			tmp=a->data;
+			a->data=b->data;
+			b->data=tmp;
+		}
+		a=a->next;
+	}
+}
+
+//fn to reverse the list data
+
+void reverse()
+{
+	NODE*a=st,*b=NULL,*c;
+	while(a!=NULL)
+	{
+		c=a->next;
+		a->next=b;
+		b=a;
+		a=c;
+	}
+	st=b;
+}
+
+//fn of recurssion
+
+void revdisplay(NODE*a)
+{
+	if(a==NULL)
+	return;
+	revdisplay(a->next);
+	printf("%5d",a->data);
+}
+
+
+
+void main()
+{
+	int opt,d,res,sv,rv;
+	while(1)
+	{
+		printf("\nMenu\n");
+		printf("\n1AddEnd\n2AddBegin\n3Display\n4CountNode\n5DataSum\n6Search\n7Replace\n8Max\n9Min\n10OddCnt\n11EvenCnt\n12isOrdered\n13SortAscending\n14Reverse\n15Recurssion\n16Exit\nOption\n");
+		scanf("%d",&opt);
+		if(opt>15)
+		break;
+		switch(opt)
+		{
+			case 1:
+				printf("\nAdd at End Data");
+				scanf("%d",&d);
+				addEnd(d);break;
+				
+				case 2:
+				printf("\nAdd at Begin Data");
+				scanf("%d",&d);
+				addBeg(d);break;
+				
+				case 3:
+					display();break;
+					
+					case 4:
+						printf("\nNode Count:%d",count());
+						break;
+						
+						case 5:
+							printf("\nData sum:%d",sum());
+							break;
+							
+							case 6:
+								printf("\nEnter Search value");
+								scanf("%d",&sv);
+								if(search(sv)==0)
+								printf("Not" );
+								printf("Found");
+								break;
+								
+								case 7:
+									printf("\nEnter search value");
+									scanf("%d",&sv);
+									printf("\nReplace Value");
+									scanf("%d",&rv);
+									findReplace(sv,rv);
+									break;
+									
+									case 8:
+										printf("\nMax:%d",findMax);
+										break;
+										
+										case 9:
+										printf("\nMin:%d",findMin);
+										break;
+										
+										case 10:
+											printf("\nOdd count:%d",oddCnt());
+											break;
+											
+										case 11:
+											printf("\nEven count:%d",evenCnt());
+										    break;
+										    
+										case 12:
+											if(st==NULL)
+											printf("\nEmpty List");
+											else
+											{
+												if(isOrdered()==0)
+												printf("\nNot Ordered");
+												else
+												printf("\nOrdered");
+											}
+											break;
+											
+											case 13:
+												sort();
+												break;
+												
+												case 14:
+													reverse();
+													break;
+													
+												case 15:
+													revdisplay(st);
+													
+			}
+	}
+}
